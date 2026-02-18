@@ -1,10 +1,9 @@
 import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
-import BookmarkForm from '@/components/BookmarkForm'
-import BookmarkList from '@/components/BookmarkList'
+import BookmarkManager from '@/components/BookmarkManager'
 
 export default async function Home() {
-    const supabase = createClient()
+    const supabase = await createClient()
 
     const {
         data: { user },
@@ -39,13 +38,7 @@ export default async function Home() {
                 </div>
 
                 {/* Main Content Area */}
-                <div className="flex flex-col gap-6">
-                    <BookmarkForm />
-
-                    <div className="w-full">
-                        <BookmarkList />
-                    </div>
-                </div>
+                <BookmarkManager />
             </main>
         </div>
     );

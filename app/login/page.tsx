@@ -9,28 +9,42 @@ export default function LoginPage() {
     const handleLogin = async () => {
         setLoading(true)
         const supabase = createClient()
+
+        // Get the current URL origin
+        const redirectUrl = `${window.location.origin}/auth/callback`
+        console.log('Redirect URL:', redirectUrl)
+
         const { error } = await supabase.auth.signInWithOAuth({
             provider: 'google',
             options: {
-                redirectTo: `${location.origin}/auth/callback`,
+                redirectTo: redirectUrl,
             },
         })
+
         if (error) {
             setLoading(false)
             console.error('Error logging in:', error.message)
+            alert(`Login error: ${error.message}`)
         }
     }
 
     return (
-        <div className="flex min-h-screen flex-col items-center justify-center p-24">
-            <div className="w-full max-w-md p-8 bg-white rounded-lg shadow-md border border-gray-200 dark:bg-gray-800 dark:border-gray-700">
-                <h1 className="text-3xl font-bold mb-6 text-center text-gray-900 dark:text-white">Welcome Back</h1>
-                <p className="text-gray-600 dark:text-gray-400 mb-8 text-center">Sign in to manage your bookmarks</p>
+        <div className="flex min-h-screen flex-col items-center justify-center p-4 sm:p-24 bg-gray-50 dark:bg-gray-900 transition-colors">
+            <div className="w-full max-w-md p-8 bg-white rounded-2xl shadow-xl border border-gray-100 dark:bg-gray-800 dark:border-gray-700">
+                <div className="flex justify-center mb-6">
+                    <div className="p-3 bg-blue-100 dark:bg-blue-900/30 rounded-full">
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-blue-600 dark:text-blue-400" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M5 4a2 2 0 012-2h6a2 2 0 012 2v14l-5-2.5L5 18V4z" />
+                        </svg>
+                    </div>
+                </div>
+                <h1 className="text-3xl font-extrabold mb-2 text-center text-gray-900 dark:text-white tracking-tight">Welcome Back</h1>
+                <p className="text-gray-500 dark:text-gray-400 mb-8 text-center text-sm">Sign in to sync your bookmarks across devices</p>
 
                 <button
                     onClick={handleLogin}
                     disabled={loading}
-                    className="w-full flex items-center justify-center gap-3 px-4 py-3 bg-white text-gray-700 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600 transistion-all duration-200"
+                    className="w-full flex items-center justify-center gap-3 px-4 py-3.5 bg-white text-gray-700 border border-gray-200 rounded-xl shadow-sm hover:bg-gray-50 hover:border-gray-300 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed dark:bg-gray-700 dark:text-white dark:border-gray-600 dark:hover:bg-gray-600 dark:hover:border-gray-500 transition-all duration-200 font-medium"
                 >
                     {loading ? (
                         <svg className="animate-spin h-5 w-5 mr-3 text-gray-700 dark:text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
